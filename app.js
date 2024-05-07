@@ -20,7 +20,7 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 app.get('/', (req, res) => {
-  res.send('<a href="/login">Login with Google</a></br><a href="/github/callback">Login with Github</a>');
+  res.send('<a href="/login">Login with Google</a></br><a href="/github/login">Login with Github</a>');
 })
 
 app.get('/login', (req, res) => {
@@ -81,6 +81,11 @@ app.get('/auth/google/callback', function (req, res) {
             }
         });
     }
+});
+
+app.get('/github/login', (req, res) => {
+  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URL}`;
+  res.redirect(url);
 });
 
 app.get('/github/callback', (req, res) => {

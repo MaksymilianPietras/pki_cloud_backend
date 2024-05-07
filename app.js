@@ -6,12 +6,16 @@ const app = express()
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
-const REDIRECT_URL = OAuth2Data.web.redirect_uris[0]
+const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authed = false;
 
 app.get('/', (req, res) => {
+  res.send('<a href="/login">Login with Google</a>');
+})
+
+app.get('/login', (req, res) => {
     if (!authed) {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
@@ -21,7 +25,7 @@ app.get('/', (req, res) => {
         console.log(url)
         res.redirect(url);
     } else {
-        var oauth2 = google.oauth2({ auth: oAuth2Client, version: 'v2' });
+        var oauth2 = google.oauth2({ auth: oAuth2Client, version: 'v2' })
         oauth2.userinfo.v2.me.get(function(err, result) {
           if (err){
             console.log("Niestety BLAD!!")
@@ -30,11 +34,27 @@ app.get('/', (req, res) => {
             loggedUser = result.data.name
             console.log(loggedUser)
           }
-          res.send('Logged in: '. 
+          res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
-                '"height="23" width="23">'))
+                '"height="23" width="23">', '<br/><a href="/logout">Logout</a>'))
         })
     }
+})
+
+app.get('/logout', (req, res) => {
+  if (authed){
+    oAuth2Client.revokeCredentials(function(err, response) {
+      if (err){
+        console.error("Błąd podczas wylogowywania:", err);
+      } else {
+        console.log('Użytkownik został wylogowany.');
+      }
+    });
+
+    authed = false;
+    
+  } 
+  res.redirect('/');
 })
 
 app.get('/auth/google/callback', function (req, res) {

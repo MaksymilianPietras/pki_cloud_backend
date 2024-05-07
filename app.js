@@ -85,7 +85,7 @@ app.get('/auth/google/callback', function (req, res) {
 });
 
 app.get('/github/login', (req, res) => {
-  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URL}`;
+  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URL}&prompt=consent`;
   res.redirect(url);
 });
 
@@ -102,6 +102,11 @@ app.get('/github/callback', (req, res) => {
     access_token = response.data.access_token
     res.redirect('/success');
   })
+})
+
+app.get('/github/logout', (req, res) => {
+  access_token = ""
+  res.redirect('/')
 })
 
 app.get('/success', function(req, res) {

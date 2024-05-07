@@ -1,8 +1,16 @@
 const { google } = require('googleapis');
 const express = require('express')
 const OAuth2Data = require('./google_key.json')
+const githubOAuth2Data = require('./github_key.json')
+const axios = require('axios')
+var access_token = "";
 
 const app = express()
+
+app.set('view engine', 'ejs');
+
+const GITHUB_CLIENT_ID = githubOAuth2Data.client_id
+const GITHUB_CLIENT_SECRET = githubOAuth2Data.client_secret
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
@@ -12,7 +20,7 @@ const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_U
 var authed = false;
 
 app.get('/', (req, res) => {
-  res.send('<a href="/login">Login with Google</a>');
+  res.send('<a href="/login">Login with Google</a></br><a href="/github/callback">Login with Github</a>');
 })
 
 app.get('/login', (req, res) => {
@@ -73,6 +81,34 @@ app.get('/auth/google/callback', function (req, res) {
             }
         });
     }
+});
+
+app.get('/github/callback', (req, res) => {
+  const requestToken = req.query.code
+  
+  axios({
+    method: 'post',
+    url: `https://github.com/login/oauth/access_token?client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&code=${requestToken}`,
+    headers: {
+         accept: 'application/json'
+    }
+  }).then((response) => {
+    access_token = response.data.access_token
+    res.redirect('/success');
+  })
+})
+
+app.get('/success', function(req, res) {
+
+  axios({
+    method: 'get',
+    url: `https://api.github.com/user`,
+    headers: {
+      Authorization: 'token ' + access_token
+    }
+  }).then((response) => {
+    res.render('pages/success',{ userData: response.data });
+  })
 });
 
 const port = process.env.port || 5000

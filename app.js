@@ -113,7 +113,8 @@ app.get('/success', function(req, res) {
       Authorization: 'token ' + access_token
     }
   }).then((response) => {
-    res.render('pages/success',{ userData: response.data });
+    res.send('Logged in: '.
+            concat(response.data, '<br/><a href="/logout">Logout</a>'))
   })
 });
 

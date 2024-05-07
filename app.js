@@ -114,7 +114,7 @@ app.get('/success', function(req, res) {
     }
   }).then((response) => {
     res.send('Logged in: '.
-            concat(response.data, '<br/><a href="/logout">Logout</a>'))
+        concat(response.data.login, '<br/><a href="/github/logout">Logout</a>'))
   })
 });
 

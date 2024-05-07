@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 
 const GITHUB_CLIENT_ID = githubOAuth2Data.client_id
 const GITHUB_CLIENT_SECRET = githubOAuth2Data.client_secret
+const GITHUB_REDIRECT_URL = "https://pki-cloud-backend-ufl3.onrender.com/github/callback"
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
@@ -84,7 +85,7 @@ app.get('/auth/google/callback', function (req, res) {
 });
 
 app.get('/github/login', (req, res) => {
-  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URL}`;
+  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URL}`;
   res.redirect(url);
 });
 

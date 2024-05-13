@@ -3,6 +3,8 @@ const express = require('express')
 const OAuth2Data = require('./google_key.json')
 const githubOAuth2Data = require('./github_key.json')
 const axios = require('axios')
+const dotenv = require("dotenv");
+const { getUsers } = require('./dbHandler');
 var access_token = "";
 
 const app = express()
@@ -19,6 +21,8 @@ const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authed = false;
+
+getUsers()
 
 app.get('/', (req, res) => {
   res.send('<a href="/login">Login with Google</a></br><a href="/github/login">Login with Github</a>');

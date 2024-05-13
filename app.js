@@ -22,8 +22,6 @@ const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authed = false;
 
-getUsers()
-
 app.get('/', (req, res) => {
   res.send('<a href="/login">Login with Google</a></br><a href="/github/login">Login with Github</a>');
 })
@@ -47,9 +45,13 @@ app.get('/login', (req, res) => {
             loggedUser = result.data.name
             console.log(loggedUser)
           }
+          const users = getUsers()
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
-                '"height="23" width="23">', '<br/><a href="/logout">Logout</a>'))
+                '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
+                <br/>
+                <br/>
+                <h3>${users}</h3>`))
         })
     }
 })
@@ -122,8 +124,12 @@ app.get('/success', function(req, res) {
       Authorization: 'token ' + access_token
     }
   }).then((response) => {
+    const users = getUsers()
     res.send('Logged in: '.
-        concat(response.data.login, '<br/><a href="/github/logout">Logout</a>'))
+        concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
+        <br/>
+        <br/>
+        <h3>${users}</h3>`))
   })
 });
 

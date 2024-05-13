@@ -19,10 +19,12 @@ const getUsers = (request, response) => {
         if (error) { 
             throw error
         } 
-        console.log('Dostałem ...'); 
-        for (let row of res.rows) { 
-            console.log(JSON.stringify(row)); 
+        console.log('Dostałem ...');
+        const arr = []
+        for (let row of res.rows) {
+            arr.push(JSON.stringify(row)) 
         } 
+        return arr
     }) 
 } 
 

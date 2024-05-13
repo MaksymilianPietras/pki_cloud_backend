@@ -24,6 +24,7 @@ const getUsers = (request, response) => {
         for (let row of res.rows) {
             arr.push(JSON.stringify(row)) 
         } 
+        console.log(arr)
         return arr
     }) 
 } 

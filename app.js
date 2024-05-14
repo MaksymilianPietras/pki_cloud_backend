@@ -4,8 +4,8 @@ const OAuth2Data = require('./google_key.json')
 const githubOAuth2Data = require('./github_key.json')
 const axios = require('axios')
 const dotenv = require("dotenv");
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+require('bootstrap');
+require('bootstrap/dist/css/bootstrap.min.css');
 
 const { getUsers, addUser } = require('./dbHandler');
 var access_token = "";

@@ -26,4 +26,9 @@ const getUsers = async () => {
     });
 };
 
-module.exports = { getUsers };
+const addUser = async (req, res) => {
+    const users = await getUsers()
+    console.log(req)
+};
+
+module.exports = { getUsers, addUser };

@@ -4,7 +4,7 @@ const OAuth2Data = require('./google_key.json')
 const githubOAuth2Data = require('./github_key.json')
 const axios = require('axios')
 const dotenv = require("dotenv");
-const { getUsers } = require('./dbHandler');
+const { getUsers, addUser } = require('./dbHandler');
 var access_token = "";
 
 const app = express()
@@ -47,6 +47,7 @@ app.get('/login', async (req, res) => {
           }
           const users = await getUsers()
           let usersInHtml = createUsersHtml(users);
+          await addUser()
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>

@@ -4,7 +4,7 @@ const OAuth2Data = require('./google_key.json')
 const githubOAuth2Data = require('./github_key.json')
 const axios = require('axios')
 const dotenv = require("dotenv");
-const { getUsers, addUser, findUser } = require('./dbHandler');
+const { getUsers, addUser } = require('./dbHandler');
 var access_token = "";
 
 const app = express()
@@ -48,13 +48,19 @@ app.get('/login', async (req, res) => {
           await addUser(loggedUser)
           const users = await getUsers()
           let usersInHtml = createUsersHtml(users);
-          res.send('Logged in: '.
-            concat(loggedUser, ' <img src"', result.data.picture,
-                '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
-                <br/>
-                <br/>
-                ${usersInHtml}`))
-        })
+          const bootstrapLoggedInContent = `
+          <div class="container">
+            <p class="lead">Logged in as: ${loggedUser}</p>
+            <img src="${result.data.picture}" alt="Profile Picture" height="23" width="23">
+            <br/><br/>
+            <a href="/logout" class="btn btn-primary">Logout</a>
+            <br/><br/>
+            ${usersInHtml}
+          </div>
+        `;
+
+        res.send(bootstrapLoggedInContent);
+      })
     }
 })
 
@@ -129,11 +135,16 @@ app.get('/success', async (req, res) => {
     await addUser(response.data.login)
     const users = await getUsers()
     let usersInHtml = createUsersHtml(users)
-    res.send('Logged in: '.
-        concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
-        <br/>
-        <br/>
-        ${usersInHtml}`))
+    const bootstrapLoginForm = `
+    <div class="container">
+      <p class="lead">Logged in as: ${response.data.login}</p>
+      <a href="/github/logout" class="btn btn-primary">Logout</a>
+      <br/><br/>
+      ${usersInHtml}
+    </div>
+  `;
+
+    res.send(bootstrapLoginForm)
   })
 });
 

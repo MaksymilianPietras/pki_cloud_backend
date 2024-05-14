@@ -161,10 +161,36 @@ const port = process.env.port || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
 
 function createUsersHtml(users) {
-  let usersInHtml = "";
+  let usersInHtml = `
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Osoba</th>
+        <th scope="col">Dołączyła</th>
+        <th scope="col">Ostatnia wizyta</th>
+        <th scope="col">Counter</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
   users.forEach(user => {
-    usersInHtml += `<h3>Osoba: ${user["name"]} Dołączyła: ${user["joined"]} Ostatnia wizyta: ${user["lastvisit"]} Counter: ${user["counter"]}</h3><br/>`;
+    usersInHtml += `
+      <tr>
+        <td>${user["name"]}</td>
+        <td>${user["joined"]}</td>
+        <td>${user["lastvisit"]}</td>
+        <td>${user["counter"]}</td>
+      </tr>
+    `;
   });
+
+  usersInHtml += `
+      </tbody>
+    </table>
+  `;
   return usersInHtml;
 }
 

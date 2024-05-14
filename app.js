@@ -140,7 +140,7 @@ app.listen(port, () => console.log(`Server running at ${port}`));
 function createUsersHtml(users) {
   let usersInHtml = "";
   users.forEach(user => {
-    usersInHtml += `<h3>Osoba: ${user.name} Dołączyła: ${user.joined} Ostatnia wizyta: ${user.lastvisit} Counter: ${user.counter}</h3><br/>`;
+    usersInHtml += `<h3>Osoba: ${user["name"]} Dołączyła: ${user["joined"]} Ostatnia wizyta: ${user["lastvisit"]} Counter: ${user["counter"]}</h3><br/>`;
   });
   return usersInHtml;
 }

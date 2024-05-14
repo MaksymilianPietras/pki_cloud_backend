@@ -62,4 +62,4 @@ const findUser = async (username) => {
     }
 }
 
-module.exports = { getUsers, addUser };
+module.exports = { getUsers, addUser, findUser };

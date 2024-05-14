@@ -46,10 +46,7 @@ app.get('/login', async (req, res) => {
             console.log(loggedUser)
           }
           const users = await getUsers()
-          let usersInHtml = ""
-          users.forEach(user => {
-            usersInHtml += `<h3>${user}</h3><br/>`
-          });
+          let usersInHtml = createUsersHtml(users);
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
@@ -129,10 +126,7 @@ app.get('/success', async (req, res) => {
     }
   }).then(async (response) => {
     const users = await getUsers()
-    let usersInHtml = ""
-          users.forEach(user => {
-            usersInHtml += `<h3>${user}</h3><br/>`
-          });
+    let usersInHtml = createUsersHtml(users)
     res.send('Logged in: '.
         concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
         <br/>
@@ -143,3 +137,11 @@ app.get('/success', async (req, res) => {
 
 const port = process.env.port || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
+function createUsersHtml(users) {
+  let usersInHtml = "";
+  users.forEach(user => {
+    usersInHtml += `<h3>Osoba: ${user.name} Dołączyła: ${user.joined} Ostatnia wizyta: ${user.lastvisit} Counter: ${user.counter}</h3><br/>`;
+  });
+  return usersInHtml;
+}
+

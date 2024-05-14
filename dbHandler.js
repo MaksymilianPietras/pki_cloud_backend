@@ -35,7 +35,7 @@ const addUser = async (userLogin) => {
         });
     } else {
         pool.query('INSERT INTO users (name, joined, lastvisit, counter) VALUES ($1, $2, $3, $4)',
-            [userLogin, currentTime, currentTime, 1], (error, res) => {
+            [userLogin, new Date().toISOString(), new Date().toISOString(), 1], (error, res) => {
         });
     }
     

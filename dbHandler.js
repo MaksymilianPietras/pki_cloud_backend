@@ -53,13 +53,13 @@ const addUser = async (userLogin) => {
 };
 
 const findUser = async (username) => {
-    const users = await getUsers()
-    for (const currentUser in users){
-        if (username === currentUser.name){
-            return currentUser
-        }
+    try {
+        const queryResult = await pool.query('SELECT * FROM users WHERE name = $1', [username]);
+        return queryResult.rows[0] || null;
+    } catch (error) {
+        console.error('Error finding user:', error);
+        return null;
     }
-    return null
 }
 
 module.exports = { getUsers, addUser };

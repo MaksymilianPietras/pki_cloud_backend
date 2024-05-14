@@ -50,7 +50,8 @@ app.get('/login', async (req, res) => {
           const users = await getUsers()
           let usersInHtml = createUsersHtml(users);
           const bootstrapLoggedInContent = `
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
           <div class="container">
             <p class="lead">Logged in as: ${loggedUser}</p>
             <img src="${result.data.picture}" alt="Profile Picture" height="23" width="23">
@@ -138,7 +139,8 @@ app.get('/success', async (req, res) => {
     const users = await getUsers()
     let usersInHtml = createUsersHtml(users)
     const bootstrapLoginForm = `
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <div class="container">
       <p class="lead">Logged in as: ${response.data.login}</p>
       <a href="/github/logout" class="btn btn-primary">Logout</a>

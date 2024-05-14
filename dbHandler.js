@@ -26,9 +26,29 @@ const getUsers = async () => {
     });
 };
 
-const addUser = async (req, res) => {
-    const users = await getUsers()
-    console.log(req)
+const addUser = async (userLogin) => {
+    const thisUser = await findUser(userLogin)
+
+
+    if (thisUser !== null){
+        pool.query(`UPDATE users SET lastvisit = $1, counter = $2 WHERE name = $3`, [new Date().toISOString(), thisUser.counter + 1, userLogin], (error, res) => {
+        });
+    } else {
+        pool.query('INSERT INTO users (name, joined, lastvisit, counter) VALUES ($1, $2, $3, $4)',
+            [userLogin, currentTime, currentTime, 1], (error, res) => {
+        });
+    }
+    
 };
+
+const findUser = async (username) => {
+    const users = await getUsers()
+    for (const currentUser in users){
+        if (username === currentUser.name){
+            return currentUser
+        }
+    }
+    return null
+}
 
 module.exports = { getUsers, addUser };

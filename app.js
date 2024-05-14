@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('<a href="/login">Login with Google</a></br><a href="/github/login">Login with Github</a>');
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
     if (!authed) {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
@@ -37,7 +37,7 @@ app.get('/login', (req, res) => {
         res.redirect(url);
     } else {
         var oauth2 = google.oauth2({ auth: oAuth2Client, version: 'v2' })
-        oauth2.userinfo.v2.me.get(function(err, result) {
+        oauth2.userinfo.v2.me.get(async function(err, result) {
           if (err){
             console.log("Niestety BLAD!!")
             console.log(err)
@@ -45,7 +45,7 @@ app.get('/login', (req, res) => {
             loggedUser = result.data.name
             console.log(loggedUser)
           }
-          const users = getUsers()
+          const users = await getUsers()
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
@@ -115,7 +115,7 @@ app.get('/github/logout', (req, res) => {
   res.redirect('/')
 })
 
-app.get('/success', function(req, res) {
+app.get('/success', async (req, res) => {
 
   axios({
     method: 'get',
@@ -123,8 +123,8 @@ app.get('/success', function(req, res) {
     headers: {
       Authorization: 'token ' + access_token
     }
-  }).then((response) => {
-    const users = getUsers()
+  }).then(async (response) => {
+    const users = await getUsers()
     res.send('Logged in: '.
         concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
         <br/>

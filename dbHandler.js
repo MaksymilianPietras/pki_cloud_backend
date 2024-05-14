@@ -13,20 +13,18 @@ const pool = new Pool({
             }
         });
 
-const getUsers = (request, response) => { 
-    console.log('Pobieram dane ...'); 
-    pool.query('SELECT * FROM users', (error, res) => { 
-        if (error) { 
-            throw error
-        } 
-        console.log('Dostałem ...');
-        const arr = []
-        for (let row of res.rows) {
-            arr.push(JSON.stringify(row)) 
-        } 
-        console.log(arr)
-        return arr
-    }) 
-} 
+const getUsers = async () => {
+    console.log('Pobieram dane ...');
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM users', (error, res) => {
+            if (error) {
+                return reject(error);
+            }
+            console.log('Dostałem ...');
+            const arr = res.rows.map(row => JSON.stringify(row));
+            resolve(arr);
+        });
+    });
+};
 
 module.exports = { getUsers };

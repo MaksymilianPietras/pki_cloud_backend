@@ -45,9 +45,9 @@ app.get('/login', async (req, res) => {
             loggedUser = result.data.name
             console.log(loggedUser)
           }
+          await addUser(loggedUser)
           const users = await getUsers()
           let usersInHtml = createUsersHtml(users);
-          await addUser(loggedUser)
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
@@ -126,9 +126,9 @@ app.get('/success', async (req, res) => {
       Authorization: 'token ' + access_token
     }
   }).then(async (response) => {
+    await addUser(response.data.login)
     const users = await getUsers()
     let usersInHtml = createUsersHtml(users)
-    await addUser(loggedUser)
     res.send('Logged in: '.
         concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
         <br/>

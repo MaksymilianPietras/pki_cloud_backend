@@ -52,17 +52,16 @@ app.get('/login', async (req, res) => {
           const bootstrapLoggedInContent = `
           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-          <nav class="navbar navbar-expand-lg">
             <div class="container">
+            <nav class="navbar navbar-expand-lg">
               <p class="lead">Logged in as: ${loggedUser}</p>
               <img src="${result.data.picture}" alt="Profile Picture" height="23" width="23">
+            </nav>  
               <br/><br/>
               <a href="/logout" class="btn btn-primary">Logout</a>
               <br/><br/>
               ${usersInHtml}
             </div>
-          </nav>
-          
         `;
 
         res.send(bootstrapLoggedInContent);
@@ -144,14 +143,14 @@ app.get('/success', async (req, res) => {
     const bootstrapLoginForm = `
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <nav class="navbar navbar-expand-lg">
       <div class="container">
+      <nav class="navbar navbar-expand-lg">
         <p class="lead">Logged in as: ${response.data.login}</p>
         <a href="/github/logout" class="btn btn-primary">Logout</a>
+      </nav>
         <br/><br/>
         ${usersInHtml}
       </div>
-    </nav>
   `;
 
     res.send(bootstrapLoginForm)

@@ -21,8 +21,7 @@ const getUsers = async () => {
                 return reject(error);
             }
             console.log('Dostałem ...');
-            const arr = res.rows.map(row => JSON.stringify(row));
-            resolve(arr);
+            resolve(res.rows);
         });
     });
 };

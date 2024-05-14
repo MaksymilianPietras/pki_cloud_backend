@@ -47,7 +47,7 @@ app.get('/login', async (req, res) => {
           }
           const users = await getUsers()
           let usersInHtml = createUsersHtml(users);
-          await addUser()
+          await addUser(req)
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>

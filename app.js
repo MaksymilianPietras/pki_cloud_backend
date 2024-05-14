@@ -46,12 +46,16 @@ app.get('/login', async (req, res) => {
             console.log(loggedUser)
           }
           const users = await getUsers()
+          let usersInHtml = ""
+          users.array.forEach(user => {
+            usersInHtml += `<h3>${user}</h3><br/>`
+          });
           res.send('Logged in: '.
             concat(loggedUser, ' <img src"', result.data.picture,
                 '"height="23" width="23">', `<br/><a href="/logout">Logout</a>
                 <br/>
                 <br/>
-                <h3>${users}</h3>`))
+                ${usersInHtml}`))
         })
     }
 })
@@ -125,11 +129,15 @@ app.get('/success', async (req, res) => {
     }
   }).then(async (response) => {
     const users = await getUsers()
+    let usersInHtml = ""
+          users.array.forEach(user => {
+            usersInHtml += `<h3>${user}</h3><br/>`
+          });
     res.send('Logged in: '.
         concat(response.data.login, `<br/><a href="/github/logout">Logout</a>
         <br/>
         <br/>
-        <h3>${users}</h3>`))
+        ${usersInHtml}`))
   })
 });
 

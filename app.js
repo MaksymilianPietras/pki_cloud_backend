@@ -173,7 +173,7 @@ app.listen(port, () => console.log(`Server running at ${port}`));
 
 function dbModal(err) {
   return `
-    <div class="modal fade" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal fade" id='db-modal' tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -189,8 +189,17 @@ function dbModal(err) {
         </div>
       </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            var myModal = new bootstrap.Modal(document.getElementById('db-modal'));
+            myModal.show();
+        };
+    </script>
+
   `;
 }
+
 function createUsersHtml(users) {
   let usersInHtml = `
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">

@@ -31,11 +31,22 @@ const addUser = async (userLogin) => {
 
 
     if (thisUser !== null){
-        pool.query(`UPDATE users SET lastvisit = $1, counter = $2 WHERE name = $3`, [new Date().toISOString(), thisUser.counter + 1, userLogin], (error, res) => {
+        pool.query(`UPDATE users SET lastvisit = $1, counter = $2 WHERE name = $3`, 
+        [new Date().toISOString(), thisUser.counter + 1, userLogin], (error, res) => {
+            if (error) {
+                console.error('Error updating user:', error);
+            } else {
+            console.log('User updated added successfully.');
+            }
         });
     } else {
         pool.query('INSERT INTO users (name, joined, lastvisit, counter) VALUES ($1, $2, $3, $4)',
-            [userLogin, new Date().toISOString(), new Date().toISOString(), 1], (error, res) => {
+        [userLogin, new Date().toISOString(), new Date().toISOString(), 1], (error, res) => {
+            if (error) {
+                console.error('Error inserting new user:', error);
+            } else {
+                console.log('New user added successfully.');
+            }
         });
     }
     

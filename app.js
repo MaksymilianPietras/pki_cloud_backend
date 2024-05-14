@@ -47,24 +47,29 @@ app.get('/login', async (req, res) => {
             console.log(loggedUser)
           }
           await addUser(loggedUser)
-          const users = await getUsers()
-          let usersInHtml = createUsersHtml(users);
-          const bootstrapLoggedInContent = `
-          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-            <div class="container">
-            <nav class="navbar navbar-expand-lg">
-              <p class="lead">Logged in as: ${loggedUser}</p>
-              <img src="${result.data.picture}" alt="Profile Picture" height="23" width="23">
-            </nav>  
-              <br/><br/>
-              <a href="/logout" class="btn btn-primary">Logout</a>
-              <br/><br/>
-              ${usersInHtml}
-            </div>
-        `;
-
-        res.send(bootstrapLoggedInContent);
+          try{
+            const users = await getUsers()
+              let usersInHtml = createUsersHtml(users);
+              const bootstrapLoggedInContent = `
+              <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+              <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+                ${dbModal("Pomyślnie połączono się z bazą")}
+                <div class="container">
+                <nav class="navbar navbar-expand-lg">
+                  <p class="lead">Logged in as: ${loggedUser}</p>
+                  <img src="${result.data.picture}" alt="Profile Picture" height="23" width="23">
+                </nav>  
+                  <br/><br/>
+                  <a href="/logout" class="btn btn-primary">Logout</a>
+                  <br/><br/>
+                  ${usersInHtml}
+                </div>
+            `;
+            res.send(bootstrapLoggedInContent);
+          } catch(error){
+            res.send(dbModal(error))
+          }
+          
       })
     }
 })
@@ -138,27 +143,56 @@ app.get('/success', async (req, res) => {
     }
   }).then(async (response) => {
     await addUser(response.data.login)
-    const users = await getUsers()
-    let usersInHtml = createUsersHtml(users)
-    const bootstrapLoginForm = `
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-      <div class="container">
-      <nav class="navbar navbar-expand-lg">
-        <p class="lead">Logged in as: ${response.data.login}</p>
-        <a href="/github/logout" class="btn btn-primary">Logout</a>
-      </nav>
-        <br/><br/>
-        ${usersInHtml}
-      </div>
-  `;
+    try{
+      const users = await getUsers()
+          let usersInHtml = createUsersHtml(users)
+          const bootstrapLoginForm = `
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+          ${dbModal("Pomyślnie połączono się z bazą")}
+            <div class="container">
+            <nav class="navbar navbar-expand-lg">
+              <p class="lead">Logged in as: ${response.data.login}</p>
+              <a href="/github/logout" class="btn btn-primary">Logout</a>
+            </nav>
+              <br/><br/>
+              ${usersInHtml}
+            </div>
+        `;
 
-    res.send(bootstrapLoginForm)
+        res.send(bootstrapLoginForm)
+    }catch (error){
+      res.send(dbModal(error))
+    }
+    
   })
 });
 
 const port = process.env.port || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
+
+function dbModal(err) {
+  return `
+            <div class="modal" tabindex="-1" role="dialog" id="errorModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Błąd</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>${err}</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                </div>
+              </div>
+            </div>
+          </div>
+            `;
+}
 
 function createUsersHtml(users) {
   let usersInHtml = `

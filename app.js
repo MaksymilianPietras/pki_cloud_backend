@@ -47,7 +47,7 @@ app.get('/login', async (req, res) => {
           }
           const users = await getUsers()
           let usersInHtml = ""
-          users.array.forEach(user => {
+          users.forEach(user => {
             usersInHtml += `<h3>${user}</h3><br/>`
           });
           res.send('Logged in: '.
@@ -130,7 +130,7 @@ app.get('/success', async (req, res) => {
   }).then(async (response) => {
     const users = await getUsers()
     let usersInHtml = ""
-          users.array.forEach(user => {
+          users.forEach(user => {
             usersInHtml += `<h3>${user}</h3><br/>`
           });
     res.send('Logged in: '.
